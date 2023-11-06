@@ -141,7 +141,7 @@ int main() {
                 for (auto &account: accounts)
                     account.mtx.lock_shared();
 
-                system("cls");
+                system("clear");
                 cout << "Consistency thread " << tID << ", check number " << ++i << endl;
                 for (Account &account: accounts) {
                     checkConsistency(account, accounts);

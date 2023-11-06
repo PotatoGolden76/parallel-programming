@@ -11,8 +11,8 @@ std::condition_variable g_cv;
 
 bool g_ready = false;
 
-std::vector<int> vector1 = {1, 2, 3, 4, 50};
-std::vector<int> vector2 = {6, 7, 8, 9, 10};
+std::vector<int> vector1 = {1, 2, 3, 4, 5};
+std::vector<int> vector2 = {5, 4, 3, 2, 1};
 std::vector<int> products(vector1.size());
 int sum = 0;
 
@@ -32,9 +32,9 @@ void producer() {
         std::unique_lock<std::mutex> ul(g_mutex);
         products[i] = vector1[i] * vector2[i];
         g_ready = true;
-        ul.unlock();
+
         g_cv.notify_one();
-        ul.lock();
+
         g_cv.wait(ul, []() { return !g_ready; });
     }
 }
