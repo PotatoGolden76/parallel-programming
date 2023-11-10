@@ -4,6 +4,7 @@
 #include <mutex>
 #include <shared_mutex>
 #include <future>
+#include <sys/time.h>
 
 using namespace std;
 
@@ -14,10 +15,10 @@ struct testData {
 };
 
 testData test1 = {
-        {{1, 0, 1}, {2, 1, 1}, {0, 1, 1}, {1, 1, 2}},
-        {{1, 2, 1}, {2, 3, 1}, {4, 2, 2}},
-        {4,         3},
-        {3,         3}
+        {{8, 15, 24, 11, 40, 24, 18, 34, 1},{8, 15, 24, 11, 40, 24, 18, 34, 1}, {29, 33, 28, 10, 17, 10, 19, 14, 8}, {23, 28, 24, 40, 40, 18, 3, 15, 14}, {39, 19, 15, 28, 30, 12, 23, 2, 36}, {20, 4, 24, 21, 14, 34, 6, 17, 17}, {12, 35, 38, 15, 22, 27, 0, 1, 23}, {22, 40, 14, 26, 36, 27, 31, 0, 19}, {18, 33, 3, 13, 26, 24, 14, 38, 20}, {23, 25, 39, 3, 23, 24, 21, 20, 39}},
+        {{21, 14, 38, 37, 40, 38, 24, 9, 13}, {31, 13, 10, 21, 5, 33, 36, 11, 30}, {11, 30, 9, 12, 21, 27, 27, 24, 10}, {14, 7, 38, 29, 6, 40, 13, 36, 26}, {19, 21, 10, 38, 25, 22, 7, 16, 39}, {21, 10, 1, 40, 24, 20, 29, 14, 10}, {31, 23, 30, 33, 36, 17, 19, 2, 27}, {6, 32, 7, 10, 36, 13, 23, 19, 23}, {37, 25, 27, 37, 19, 7, 9, 25, 7}},
+        {10,         9},
+        {9,         9}
 };
 
 testData currentTest = test1;
@@ -150,8 +151,21 @@ void runThird() {
 }
 
 int main() {
+    struct timeval start, end;
+    long mtime, seconds, useconds;
+    gettimeofday(&start, NULL);
+
     runFirst();
     runSecond();
     runThird();
+
+    gettimeofday(&end, NULL);
+    seconds  = end.tv_sec  - start.tv_sec;
+    useconds = end.tv_usec - start.tv_usec;
+
+    mtime = (seconds) * 100 + useconds/100;
+
+    printf("time: %ld milliseconds\n", mtime);
+
     return 0;
 }
